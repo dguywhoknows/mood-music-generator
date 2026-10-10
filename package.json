@@ -1,0 +1,16 @@
+{
+  "name": "mood-music-generator",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Describe a mood and AI composes chords and a melody. A hand-built Web Audio synth plays it, with a live piano roll and MIDI export.",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "test": "node tests/run-node.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dguywhoknows/mood-music-generator.git"
+  },
+  "homepage": "https://dguywhoknows.github.io/mood-music-generator/",
+  "license": "MIT"
+}

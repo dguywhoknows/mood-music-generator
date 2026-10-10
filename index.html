@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mood Synth</title>
+<meta name="description" content="Describe a mood; AI composes chords and melody, a Web Audio synth plays it, and you can export MIDI.">
+<meta name="app-repo" content="https://github.com/dguywhoknows/mood-music-generator">
+<meta name="app-version" content="2.0.0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23d6457a'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-family='Arial%2CHelvetica%2Csans-serif' font-weight='700' font-size='13' fill='white'%3EMS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="logo" aria-hidden="true">MS</span><div><h1>Mood Synth</h1><p>Type a feeling. Hear it.</p></div></div>
+  <nav class="topnav" data-nav aria-label="Pages"></nav>
+  <div class="top-actions"><a class="btn ghost sm" href="https://github.com/dguywhoknows/mood-music-generator" target="_blank" rel="noopener">GitHub</a><span data-ai-badge></span></div>
+</header>
+<div class="page active" data-page="compose" data-title="Compose">
+<main class="stack">
+  <div class="card">
+    <div class="row">
+      <input class="input grow" id="mood" value="rainy sunday morning, cozy but a little nostalgic" aria-label="Mood">
+      <button class="btn primary" id="compose">Compose</button>
+    </div>
+    <div class="row presets" id="presets"></div>
+  </div>
+  <div class="grid side">
+    <section class="card stack">
+      <div><div class="small muted">Now playing</div><h2 id="title" style="margin:2px 0 4px">—</h2><p class="small muted" id="desc"></p></div>
+      <div class="row"><button class="btn primary big" id="play" disabled>Play</button><button class="btn" id="vary" disabled>AI variation</button></div>
+      <div class="grid cols-2 small" id="facts"></div>
+      <label>Tempo <span id="bpmVal" class="muted"></span><input type="range" id="bpm" min="50" max="180" value="90"></label>
+      <label>Transpose <span id="trVal" class="muted">0</span><input type="range" id="transpose" min="-6" max="6" value="0"></label>
+      <div class="grid cols-2">
+        <label>Lead<select id="lead"><option value="triangle">Soft (triangle)</option><option value="sine">Pure (sine)</option><option value="square">Chip (square)</option><option value="sawtooth">Bright (saw)</option></select></label>
+        <label>Pad<select id="pad"><option value="sawtooth">Warm saw</option><option value="triangle">Glass</option><option value="square">Hollow</option><option value="sine">Organ</option></select></label>
+      </div>
+      <div class="row">
+        <label class="chk"><input type="checkbox" id="drums" checked> Drums</label>
+        <label class="chk"><input type="checkbox" id="humanize" checked> Humanize</label>
+        <label class="chk"><input type="checkbox" id="reverb" checked> Reverb</label>
+        <select id="groove" style="width:auto" aria-label="Groove"><option value="soft">Soft</option><option value="four">Four on the floor</option><option value="halftime">Half-time</option><option value="swing">Swing</option><option value="trap">Trap</option><option value="custom">Custom (drum machine)</option><option value="none">No drums</option></select>
+      </div>
+      <div class="mixer" id="mixer"></div>
+      <div class="row"><button class="btn" id="save" disabled>Save to library</button><button class="btn ghost" id="midi" disabled>Export MIDI</button><button class="btn ghost" id="wav" disabled>Export WAV</button></div>
+    </section>
+    <section class="card">
+      <div class="row between"><h2 style="margin:0">Piano roll</h2><span class="small muted" id="chordNow"></span></div>
+      <canvas id="roll" class="roll" aria-label="Piano roll"></canvas>
+      <div id="chords" class="chord-strip"></div>
+    </section>
+  </div>
+</main>
+</div>
+<div class="page" data-page="library" data-title="Library">
+<main class="stack">
+  <div class="page-head"><div><h2>Library</h2><p id="libSummary"></p></div><div class="row"><input class="input" id="libSearch" placeholder="Search title, mood, key" style="max-width:240px" aria-label="Search library"><select id="libSort" style="width:auto" aria-label="Sort"><option value="new">Newest</option><option value="plays">Most played</option><option value="tempo">Tempo</option><option value="title">Title</option></select><label class="btn ghost">Import<input type="file" id="libImport" accept=".json,application/json" hidden></label></div></div>
+  <div class="grid cols-3" id="lib"></div>
+</main>
+</div>
+
+<div class="page" data-page="chords" data-title="Chord lab">
+<main class="stack">
+  <div class="card stack">
+    <div class="row"><input class="input grow mono" id="prog" value="Am F C G" aria-label="Chord progression"><select id="labKey" style="width:auto" aria-label="Key"><option value="auto">Detect key</option></select><button class="btn primary" id="analyze">Analyze</button></div>
+    <div class="row small"><span class="muted">Try:</span><span id="progPresets" class="row"></span></div>
+  </div>
+  <div class="grid side">
+    <section class="card stack">
+      <h2 style="margin:0">Analysis</h2>
+      <div id="keyGuess" class="small"></div>
+      <div id="romans" class="roman-strip"></div>
+      <div id="cadence" class="small muted"></div>
+      <div class="row"><button class="btn" id="labPlay">Play progression</button><button class="btn" id="labDown">Transpose −1</button><button class="btn" id="labUp">Transpose +1</button><button class="btn primary" id="labUse">Use in composer</button></div>
+      <div><h3>Key candidates</h3><div id="keyCands"></div></div>
+    </section>
+    <section class="card stack">
+      <h2 style="margin:0">Reharmonize</h2>
+      <p class="small muted" style="margin:0">Pick a chord to see substitutions. Click one to swap it in.</p>
+      <div id="subs"></div>
+      <div class="row"><button class="btn ghost" id="aiReharm">Ask the model for a reharmonization</button></div>
+      <div id="aiReharmOut" class="small"></div>
+    </section>
+  </div>
+</main>
+</div>
+
+<div class="page" data-page="drums" data-title="Drum machine">
+<main class="stack" style="max-width:980px">
+  <div class="page-head"><div><h2>Drum machine</h2><p>Program a 16-step bar. Pieces set to the Custom groove use it.</p></div><div class="row"><select id="drumLoad" style="width:auto" aria-label="Load preset"><option value="">Load preset…</option></select><button class="btn" id="drumPlay">Play</button><button class="btn ghost" id="drumClear">Clear</button><button class="btn primary" id="drumUse">Use on current piece</button></div></div>
+  <div class="card"><div id="seq" class="seq"></div></div>
+  <div class="card row"><label style="display:flex;gap:10px;align-items:center;font-weight:600">Tempo <input type="range" id="drumBpm" min="60" max="180" value="96" style="width:200px"><span id="drumBpmVal" class="muted">96</span></label><label style="display:flex;gap:10px;align-items:center;font-weight:600">Swing <input type="range" id="drumSwing" min="0" max="60" value="0" style="width:160px"><span id="drumSwingVal" class="muted">0%</span></label><button class="btn ghost" id="drumRandom">Randomize</button></div>
+</main>
+</div>
+
+<div class="page" data-page="settings" data-title="Settings"></div>
+<script src="src/lib/dom.js"></script>
+<script src="src/lib/ai.js"></script>
+<script src="src/lib/router.js"></script>
+<script src="src/core.js"></script>
+<script src="src/app.js"></script>
+</body>
+</html>
