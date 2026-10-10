@@ -1,4 +1,4 @@
-/* core.js — music theory, the algorithmic composer, event scheduling and MIDI/WAV encoding (pure, unit-tested). */
+/* Music theory, the algorithmic composer, event scheduling and MIDI/WAV encoding (pure, unit-tested). */
 
 var PC = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
 var NAMES = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
