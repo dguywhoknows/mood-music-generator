@@ -3,105 +3,81 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mood Synth</title>
-<meta name="description" content="Describe a mood; AI composes chords and melody, a Web Audio synth plays it, and you can export MIDI.">
-<meta name="app-repo" content="https://github.com/dguywhoknows/mood-music-generator">
-<meta name="app-version" content="2.0.0">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23d6457a'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-family='Arial%2CHelvetica%2Csans-serif' font-weight='700' font-size='13' fill='white'%3EMS%3C/text%3E%3C/svg%3E">
+<title>Mood Synth: Type a feeling. Hear it</title>
+<meta name="description" content="Describe a mood and get a composed loop with real harmony, a melody and drums, played by an in-browser synth.">
+<meta property="og:title" content="Mood Synth">
+<meta property="og:description" content="Describe a mood and get a composed loop with real harmony, a melody and drums, played by an in-browser synth.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23d6457a'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='13' fill='white'%3EMS%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/base.css">
-<link rel="stylesheet" href="styles/app.css">
+<link rel="stylesheet" href="styles/landing.css">
+<style>:root { --accent: #d6457a; }</style>
 </head>
-<body>
-<header class="topbar">
-  <div class="brand"><span class="logo" aria-hidden="true">MS</span><div><h1>Mood Synth</h1><p>Type a feeling. Hear it.</p></div></div>
-  <nav class="topnav" data-nav aria-label="Pages"></nav>
-  <div class="top-actions"><a class="btn ghost sm" href="https://github.com/dguywhoknows/mood-music-generator" target="_blank" rel="noopener">GitHub</a><span data-ai-badge></span></div>
+<body class="landing">
+<header class="l-nav">
+  <a class="l-brand" href="#top"><span class="logo">MS</span><b>Mood Synth</b></a>
+  <nav aria-label="Sections"><a href="#demo">Demo</a><a href="#ask">Ask it</a><a href="#features">Features</a><a href="#faq">FAQ</a></nav>
+  <div class="l-nav-cta"><a class="btn primary" href="app.html">Open the app</a></div>
 </header>
-<div class="page active" data-page="compose" data-title="Compose">
-<main class="stack">
-  <div class="card">
-    <div class="row">
-      <input class="input grow" id="mood" value="rainy sunday morning, cozy but a little nostalgic" aria-label="Mood">
-      <button class="btn primary" id="compose">Compose</button>
+
+<main id="top">
+  <section class="l-hero">
+    <p class="l-kicker">Free · runs in your browser · AI built in</p>
+    <h1>Type a feeling. Hear it.</h1>
+    <p class="l-sub">Describe a mood and get a composed loop with real harmony, a melody and drums, played by an in-browser synth.</p>
+    <div class="l-actions"><a class="btn primary big" href="app.html">Open the app</a><a class="btn big" href="#demo">See it working</a></div>
+  </section>
+
+  <section class="l-demo reveal" id="demo">
+    <div class="l-window"><div class="l-window-bar"><i></i><i></i><i></i><span>Mood Synth</span></div>
+      <iframe src="app.html?embed=1" title="Mood Synth live demo" loading="lazy"></iframe></div>
+    <p class="l-caption">This is the real app running below, not a recording. Try it.</p>
+  </section>
+
+  <section class="l-section reveal" id="ask">
+    <div class="l-head"><p class="l-kicker">Just say what you want</p><h2>Tell it in plain words. It uses its own tools to do it.</h2>
+      <p>Open the AI box in the app, type a request, and the AI drives the app's real features for you: it sets things up, edits, runs and reports back. Standing instructions let you shape every AI feature to how you like to work.</p></div>
+    <div class="l-prompts"><div class="l-prompt"><div class="say">Rainy café at midnight, slow and jazzy</div><div class="does">Composes a new piece for that mood and plays it.</div></div><div class="l-prompt"><div class="say">Slower, and swap the lead for something softer</div><div class="does">Changes the tempo and lead sound.</div></div><div class="l-prompt"><div class="say">Save this to my library</div><div class="does">Stores the piece with its mood.</div></div></div>
+  </section>
+
+  <section class="l-section reveal" id="features">
+    <div class="l-head"><p class="l-kicker">What it does</p><h2>Everything in one place</h2></div>
+    <div class="l-grid"><div class="l-card"><h3>AI composition as JSON</h3><p>Key, mode, tempo, 8-chord progression, 32-beat melody, drum style, timbres</p></div><div class="l-card"><h3>Chord-symbol parser</h3><p>Chord-symbol parser (maj7, m7b5, sus, add9, slash chords …) and scale/chord-tone quantizer</p></div><div class="l-card"><h3>Algorithmic composer fallback</h3><p>Roman-numeral progressions per mode, chord-tone-anchored random-walk melodies</p></div><div class="l-card"><h3>Web Audio synth</h3><p>ADSR voices, lowpass filtering, synthesized kick/snare/hats, generated reverb impulse, compressor</p></div><div class="l-card"><h3>Lookahead scheduler</h3><p>Lookahead scheduler (Chris Wilson pattern) with humanized timing and velocity</p></div><div class="l-card"><h3>Canvas piano roll</h3><p>Canvas piano roll with live playhead and chord highlighting</p></div><div class="l-card"><h3>Tempo</h3><p>Tempo, transpose, timbre, drums, reverb controls; AI variations; Standard MIDI File export (4 tracks)</p></div><div class="l-card"><h3>Library page</h3><p>Save pieces with their mood, rename inline, pin favorites, sort by newest / most played / tempo, mini piano-roll previews, JSON export and import</p></div><div class="l-card"><h3>Chord lab page</h3><p>Type any progression for Krumhansl–Schmuckler key detection with ranked candidates, roman-numeral analysis with harmonic function, cadence detection and borrowed-chord highlighting</p></div></div>
+  </section>
+
+  <section class="l-section reveal">
+    <div class="l-head"><p class="l-kicker">How it works</p><h2>Real engines where it counts, AI where it helps</h2></div>
+    <div class="l-steps">
+      <div><span>1</span><h3>Open the app</h3><p>No sign-up needed right now. Everything runs in your browser.</p></div>
+      <div><span>2</span><h3>Ask in your own words</h3><p>Type or click. The AI handles mood → full structured composition (JSON); variation mode: rewrites the melody as call-and-response while keeping the harmony.</p></div>
+      <div><span>3</span><h3>Keep what you make</h3><p>Your work is saved in your browser and can be exported any time.</p></div>
     </div>
-    <div class="row presets" id="presets"></div>
-  </div>
-  <div class="grid side">
-    <section class="card stack">
-      <div><div class="small muted">Now playing</div><h2 id="title" style="margin:2px 0 4px">—</h2><p class="small muted" id="desc"></p></div>
-      <div class="row"><button class="btn primary big" id="play" disabled>Play</button><button class="btn" id="vary" disabled>AI variation</button></div>
-      <div class="grid cols-2 small" id="facts"></div>
-      <label>Tempo <span id="bpmVal" class="muted"></span><input type="range" id="bpm" min="50" max="180" value="90"></label>
-      <label>Transpose <span id="trVal" class="muted">0</span><input type="range" id="transpose" min="-6" max="6" value="0"></label>
-      <div class="grid cols-2">
-        <label>Lead<select id="lead"><option value="triangle">Soft (triangle)</option><option value="sine">Pure (sine)</option><option value="square">Chip (square)</option><option value="sawtooth">Bright (saw)</option></select></label>
-        <label>Pad<select id="pad"><option value="sawtooth">Warm saw</option><option value="triangle">Glass</option><option value="square">Hollow</option><option value="sine">Organ</option></select></label>
-      </div>
-      <div class="row">
-        <label class="chk"><input type="checkbox" id="drums" checked> Drums</label>
-        <label class="chk"><input type="checkbox" id="humanize" checked> Humanize</label>
-        <label class="chk"><input type="checkbox" id="reverb" checked> Reverb</label>
-        <select id="groove" style="width:auto" aria-label="Groove"><option value="soft">Soft</option><option value="four">Four on the floor</option><option value="halftime">Half-time</option><option value="swing">Swing</option><option value="trap">Trap</option><option value="custom">Custom (drum machine)</option><option value="none">No drums</option></select>
-      </div>
-      <div class="mixer" id="mixer"></div>
-      <div class="row"><button class="btn" id="save" disabled>Save to library</button><button class="btn ghost" id="midi" disabled>Export MIDI</button><button class="btn ghost" id="wav" disabled>Export WAV</button></div>
-    </section>
-    <section class="card">
-      <div class="row between"><h2 style="margin:0">Piano roll</h2><span class="small muted" id="chordNow"></span></div>
-      <canvas id="roll" class="roll" aria-label="Piano roll"></canvas>
-      <div id="chords" class="chord-strip"></div>
-    </section>
-  </div>
-</main>
-</div>
-<div class="page" data-page="library" data-title="Library">
-<main class="stack">
-  <div class="page-head"><div><h2>Library</h2><p id="libSummary"></p></div><div class="row"><input class="input" id="libSearch" placeholder="Search title, mood, key" style="max-width:240px" aria-label="Search library"><select id="libSort" style="width:auto" aria-label="Sort"><option value="new">Newest</option><option value="plays">Most played</option><option value="tempo">Tempo</option><option value="title">Title</option></select><label class="btn ghost">Import<input type="file" id="libImport" accept=".json,application/json" hidden></label></div></div>
-  <div class="grid cols-3" id="lib"></div>
-</main>
-</div>
+    <p class="l-note">Computed locally, with no AI involved: music theory, quantization, synthesis, scheduling, visualization, MIDI writing.</p>
+  </section>
 
-<div class="page" data-page="chords" data-title="Chord lab">
-<main class="stack">
-  <div class="card stack">
-    <div class="row"><input class="input grow mono" id="prog" value="Am F C G" aria-label="Chord progression"><select id="labKey" style="width:auto" aria-label="Key"><option value="auto">Detect key</option></select><button class="btn primary" id="analyze">Analyze</button></div>
-    <div class="row small"><span class="muted">Try:</span><span id="progPresets" class="row"></span></div>
-  </div>
-  <div class="grid side">
-    <section class="card stack">
-      <h2 style="margin:0">Analysis</h2>
-      <div id="keyGuess" class="small"></div>
-      <div id="romans" class="roman-strip"></div>
-      <div id="cadence" class="small muted"></div>
-      <div class="row"><button class="btn" id="labPlay">Play progression</button><button class="btn" id="labDown">Transpose −1</button><button class="btn" id="labUp">Transpose +1</button><button class="btn primary" id="labUse">Use in composer</button></div>
-      <div><h3>Key candidates</h3><div id="keyCands"></div></div>
-    </section>
-    <section class="card stack">
-      <h2 style="margin:0">Reharmonize</h2>
-      <p class="small muted" style="margin:0">Pick a chord to see substitutions. Click one to swap it in.</p>
-      <div id="subs"></div>
-      <div class="row"><button class="btn ghost" id="aiReharm">Ask the model for a reharmonization</button></div>
-      <div id="aiReharmOut" class="small"></div>
-    </section>
-  </div>
-</main>
-</div>
+  <section class="l-section reveal" id="faq">
+    <div class="l-head"><p class="l-kicker">Questions</p><h2>Good to know</h2></div>
+    <div class="l-faq">
+      <details><summary>Is it free?</summary><p>Yes. Every feature is free. </p></details>
+      <details><summary>Where is my data stored?</summary><p>What you create stays in this browser on this device. You can export a backup or delete everything from Settings.</p></details>
+      <details><summary>Do I need an API key?</summary><p>Not to try it: the app runs in demo mode with sample AI output. For live AI, connect a free Groq or OpenRouter key in Settings.</p></details>
+      <details><summary>What can I type into the AI box?</summary><p>Anything you would ask a helpful colleague who knows the app, such as: "Rainy café at midnight, slow and jazzy". It plans the steps, runs the app's own functions and tells you what it did. The Instructions tab saves preferences every AI feature follows.</p></details>
+      <details><summary>Can I see the code?</summary><p>Yes. It is open source under the MIT license on <a href="https://github.com/dguywhoknows/mood-music-generator" rel="noopener">GitHub</a>, with a <a href="tests/">public test suite</a>.</p></details>
+    </div>
+  </section>
 
-<div class="page" data-page="drums" data-title="Drum machine">
-<main class="stack" style="max-width:980px">
-  <div class="page-head"><div><h2>Drum machine</h2><p>Program a 16-step bar. Pieces set to the Custom groove use it.</p></div><div class="row"><select id="drumLoad" style="width:auto" aria-label="Load preset"><option value="">Load preset…</option></select><button class="btn" id="drumPlay">Play</button><button class="btn ghost" id="drumClear">Clear</button><button class="btn primary" id="drumUse">Use on current piece</button></div></div>
-  <div class="card"><div id="seq" class="seq"></div></div>
-  <div class="card row"><label style="display:flex;gap:10px;align-items:center;font-weight:600">Tempo <input type="range" id="drumBpm" min="60" max="180" value="96" style="width:200px"><span id="drumBpmVal" class="muted">96</span></label><label style="display:flex;gap:10px;align-items:center;font-weight:600">Swing <input type="range" id="drumSwing" min="0" max="60" value="0" style="width:160px"><span id="drumSwingVal" class="muted">0%</span></label><button class="btn ghost" id="drumRandom">Randomize</button></div>
+  <section class="l-final reveal">
+    <h2>Type a feeling. Hear it.</h2>
+    <a class="btn primary big" href="app.html">Open the app</a>
+  </section>
 </main>
-</div>
 
-<div class="page" data-page="settings" data-title="Settings"></div>
-<script src="src/lib/dom.js"></script>
-<script src="src/lib/ai.js"></script>
-<script src="src/lib/router.js"></script>
-<script src="src/core.js"></script>
-<script src="src/app.js"></script>
+<footer class="l-foot"><span>Mood Synth</span><span><a href="https://github.com/dguywhoknows/mood-music-generator" rel="noopener">Source</a> · <a href="tests/">Tests</a> · MIT license</span></footer>
+<script>
+document.querySelectorAll('.reveal').forEach((el) => el.classList.add('pre'));
+const io = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { x.target.classList.remove('pre'); io.unobserve(x.target); } }), { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
 </body>
 </html>
